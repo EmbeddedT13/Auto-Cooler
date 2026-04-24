@@ -1,0 +1,15 @@
+# Build Artifacts
+*.o
+*.elf
+*.hex
+*.bin
+*.map
+*.asm
+
+# Proteus Auto-Generated Junk
+Proteus/Project Backups/
+*.workspace
+
+# OS specific hidden files (Good practice)
+.DS_Store
+Thumbs.db
