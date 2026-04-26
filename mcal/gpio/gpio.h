@@ -56,6 +56,8 @@ typedef struct
 /*MODES*/
 #define GPIO_MODE_INPUT     0x00
 #define GPIO_MODE_OUTPUT    0x01
+#define GPIO_MODE_ALTERNATE 0x02
+#define GPIO_MODE_ANALOG    0x03
 
 /*PULL RESISTORS*/
 #define GPIO_PR_NONE        0x00

@@ -68,7 +68,7 @@ typedef struct {
 #define ADC_CONTINUOUS    1
 
 
-void ADC_Init(uint8 Channel, uint8 res, uint8 mode);
+void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode);
 void ADC_Start(void);
 uint16 ADC_Read(void);
 #endif
