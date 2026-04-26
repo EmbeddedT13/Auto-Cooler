@@ -6,6 +6,7 @@
 
 
 /*Peripheral Struct*/
+/* Update your Peripheral Struct in gpio.h */
 typedef struct
 {
     volatile uint32 MODER;  /*Address offset: 0x00 */
@@ -15,8 +16,12 @@ typedef struct
     volatile uint32 IDR;    /*Address offset: 0x10 */
     volatile uint32 ODR;    /*Address offset: 0x14 */
     volatile uint32 BSRR;   /*Address offset: 0x18 */
+    volatile uint32 LCKR;   /*Address offset: 0x1C */
+    volatile uint32 AFRL;   /*Address offset: 0x20 */
+    volatile uint32 AFRH;   /*Address offset: 0x24 */
 
 } gpio;
+
 
 /*Base Addresses*/
 #define GPIOA_BaseAddress 0x40020000
@@ -72,6 +77,9 @@ void GPIO_SetPinMode(gpio *GPIOx, uint8 PinNum, uint8 Mode);
 void GPIO_SetPullType(gpio *GPIOx, uint8 PinNum, uint8 PullType);
 void GPIO_WritePin(gpio *GPIOx, uint8 PinNum, uint8 State);
 void GPIO_WriteGroup(gpio *GPIOx, uint16 Mask, uint16 Value);
+void GPIO_SetAlternateFunction(gpio *GPIOx, uint8 PinNum, uint8 AF_Value);
 uint8 GPIO_ReadPin(gpio *GPIOx, uint8 PinNum);
+
+
 
 #endif
