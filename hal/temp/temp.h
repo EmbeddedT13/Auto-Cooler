@@ -1,0 +1,14 @@
+#ifndef TEMP_H
+#define TEMP_H
+
+#include "../../core/STD_TYPES.h"
+
+
+#define TEMP_VOLTAGE     3300  /*Vref = 3300 mv*/
+#define TEMP_RESOLUTION  4096  /*ADC resolution = 2^12 = 4096 steps*/
+
+
+void TEMP_Init(void);
+uint16 TEMP_GetCelsius_x10(void);
+
+#endif
