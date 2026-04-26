@@ -67,7 +67,7 @@ typedef struct {
 #define ADC_DISCONTINUOUS 0
 #define ADC_CONTINUOUS    1
 
-
+#define ADC_IRQ 18
 void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode);
 void ADC_Start(void);
 uint16 ADC_Read(void);
