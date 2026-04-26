@@ -8,7 +8,7 @@
 #define TEMP_RESOLUTION  4096  /*ADC resolution = 2^12 = 4096 steps*/
 
 
-void TEMP_Init(void);
+void TEMP_Init(uint8 Channel);
 uint16 TEMP_GetCelsius_x10(void);
 
 #endif
