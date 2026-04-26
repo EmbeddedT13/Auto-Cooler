@@ -34,3 +34,20 @@ void Timer3_SetPWM_DutyCycle(uint8 duty_percent) {
     /* Directly write the percentage to the Capture/Compare Register */
     TIM3->CCR1 = duty_percent;
 }
+
+void Timer_Delay_us(uint32 us) {
+    /* Assuming default internal 16 MHz clock. 1 microsecond = 16 ticks */
+    SYSTICK_LOAD = (16 * us) - 1; 
+    SYSTICK_VAL = 0;                  /* Clear current timer value */
+    SYSTICK_CTRL = 5;                 /* Enable SysTick, use processor clock (Bits 0 and 2) */
+    
+    while ((SYSTICK_CTRL & (1 << 16)) == 0); /* Wait for the COUNTFLAG to turn to 1 */
+    
+    SYSTICK_CTRL = 0;                 /* Disable SysTick to save power */
+}
+
+void Timer_Delay_ms(uint32 ms) {
+    for (uint32 i = 0; i < ms; i++) {
+        Timer_Delay_us(1000);
+    }
+}

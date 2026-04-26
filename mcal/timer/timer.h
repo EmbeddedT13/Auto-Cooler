@@ -29,8 +29,15 @@ typedef struct
 #define TIM3_BASE_ADD 0x40000400
 #define TIM3 ((timer*) TIM3_BASE_ADD)
 
+/* SysTick Registers (Hardcoded core addresses) */
+#define SYSTICK_CTRL  (*((volatile uint32*)0xE000E010))
+#define SYSTICK_LOAD  (*((volatile uint32*)0xE000E014))
+#define SYSTICK_VAL   (*((volatile uint32*)0xE000E018))
+
 /* Public APIs */
 void Timer3_PWM_Init(void);
 void Timer3_SetPWM_DutyCycle(uint8 duty_percent);
+void Timer_Delay_ms(uint32 ms);
+void Timer_Delay_us(uint32 us);
 
 #endif
