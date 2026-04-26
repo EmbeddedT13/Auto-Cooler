@@ -39,3 +39,13 @@ void GPIO_WriteGroup(gpio *GPIOx, uint16 Mask, uint16 Value)
     uint32 reset_bits = ((~Value) & Mask) << 16;
     GPIOx->BSRR = set_bits | reset_bits;
 }
+
+void GPIO_SetAlternateFunction(gpio *GPIOx, uint8 PinNum, uint8 AF_Value) {
+    if (PinNum < 8) {
+        GPIOx->AFRL &= ~(0xF << (PinNum * 4));        
+        GPIOx->AFRL |=  (AF_Value << (PinNum * 4));   
+    } else {
+        GPIOx->AFRH &= ~(0xF << ((PinNum - 8) * 4));      
+        GPIOx->AFRH |=  (AF_Value << ((PinNum - 8) * 4));
+    }
+}

@@ -38,14 +38,18 @@ typedef struct
 #define RCC_APB2 2
 
 /* Peripheral Clock Enable Bits */
-#define GPIOA_AHB1_BIT  0
-#define GPIOB_AHB1_BIT  1
-#define GPIOC_AHB1_BIT  2
-#define SYSCFG_APB2_BIT 14
-
+#define GPIOA_AHB1_BIT      0
+#define GPIOB_AHB1_BIT      1
+#define GPIOC_AHB1_BIT      2
+#define SYSCFG_APB2_BIT     14
+#define RCC_APB1_TIM3_BIT   1
+#define RCC_APB2_ADC1_BIT   8
+#define RCC_AHB1_DMA2_BIT   22
 
 void RCC_EnableClock(uint8 BusId, uint8 PeripheralBit);
-
+void RCC_EnableTIM3(void);
+void RCC_EnableADC1(void);
+void RCC_EnableDMA2(void);
 
 
 #endif

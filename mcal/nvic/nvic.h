@@ -21,13 +21,17 @@
 #define NVIC_PRIORITY_NORMAL  1
 
 /* EXTI IRQ Number Mappings */
-#define NVIC_IRQ_EXTI0      6
-#define NVIC_IRQ_EXTI1      7
-#define NVIC_IRQ_EXTI2      8
-#define NVIC_IRQ_EXTI3      9
-#define NVIC_IRQ_EXTI4      10
-#define NVIC_IRQ_EXTI9_5    23
-#define NVIC_IRQ_EXTI15_10  40
+#define NVIC_IRQ_EXTI0          6
+#define NVIC_IRQ_EXTI1          7
+#define NVIC_IRQ_EXTI2          8
+#define NVIC_IRQ_EXTI3          9
+#define NVIC_IRQ_EXTI4          10
+#define NVIC_ADC_IRQ            18
+#define NVIC_IRQ_EXTI9_5        23
+#define NVIC_TIM3_IRQ           29
+#define NVIC_IRQ_EXTI15_10      40
+#define NVIC_DMA2_STREAM0_IRQ   56 
+
 
 void NVIC_EnableInterrupt(uint8 IRQ_Num);
 void NVIC_DisableInterrupt(uint8 IRQ_Num);
