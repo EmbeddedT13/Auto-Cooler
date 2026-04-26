@@ -24,6 +24,17 @@ typedef struct {
     volatile dma_stream_t STREAM[8];
 }dma_t;
 
+/* DMA Configuration Structure */
+typedef struct {
+    uint8 Channel;
+    uint8 Direction;
+    uint8 MemDataSize;
+    uint8 PerDataSize;
+    uint8 MemIncrement;
+    uint8 PerIncrement;
+    uint8 CircularMode;
+} DMA_Config_t;
+
 #define DMA1_BASE_ADDRESS 0x40026000
 #define DMA2_BASE_ADDRESS 0x40026400
 
@@ -67,9 +78,9 @@ typedef struct {
 #define DMA_CIRCULAR_ENABLE          1
 
 
-void DMA2_Init(void);
-void DMA2_SetAddresses(uint32 *PeripheralAddress, uint32 *MemoryAddress, uint16 NumberOfTransfers);
-void DMA2_Enable(void);
+void DMA_Init(dma_stream_t *Stream, DMA_Config_t *Config);
+void DMA_SetAddresses(dma_stream_t *Stream, uint32 PeripheralAddress, uint32 MemoryAddress, uint16 NumberOfTransfers);
+void DMA_Enable(dma_stream_t *Stream);
 
 
 #endif
