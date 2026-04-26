@@ -7,6 +7,7 @@ extern uint32_t _etext, _sdata, _edata, _sbss, _ebss, _sidata;
 int main(void);
 void EXTI9_5_IRQHandler(void);
 void EXTI0_IRQHandler(void);
+void ADC_IRQHandler(void);
 
 /* Calculate the top of the SRAM (0x20000000 + 96KB) */
 #define SRAM_START 0x20000000U
@@ -75,7 +76,7 @@ void (* const vector_table[])(void) = {
     Default_Handler, /* IRQ 15 */
     Default_Handler, /* IRQ 16 */
     Default_Handler, /* IRQ 17 */
-    Default_Handler, /* IRQ 18 */
+    ADC_IRQHandler,  /* IRQ 18 */
     Default_Handler, /* IRQ 19 */
     Default_Handler, /* IRQ 20 */
     Default_Handler, /* IRQ 21 */
