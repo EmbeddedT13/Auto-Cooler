@@ -5,7 +5,6 @@
 #include "../rcc/rcc.h"
 
 
-volatile uint16 ADC_ResultBuffer = 0; /* Global software buffer */
 
 
 void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode){
@@ -32,9 +31,7 @@ void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode){
     }
 
     WRITE_BIT_FIELD(ADC->ADC_CR1, 0x03, 24, Res); /*Clear res bits in CR1 and put Res value in these bits*/
-    
-    SET_BIT(ADC->ADC_CR1, 5); /*Set EOCIE bit in CR1 register*/
-    
+        
     if(Mode == ADC_CONTINUOUS){
         SET_BIT(ADC->ADC_CR2, 1); /* Enable Continuous Conversion */
     }
@@ -46,23 +43,18 @@ void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode){
     
     WRITE_BIT_FIELD(ADC->ADC_SQR1, 0x0F, 20, 0); /* Set Sequence length to 1 */
     
-    WRITE_BIT_FIELD(ADC->ADC_SQR3, 0x1F, 0, Channel); /* Put the channel number into the first sequence slot */
-
-    NVIC_EnableInterrupt(ADC_IRQ);
-    
+    SET_BIT(ADC->ADC_CR2, 0);  /* Power on the ADC */    
 
 }
 
-void ADC_Start(void){
-    SET_BIT(ADC->ADC_CR2, 0);  /* Power on the ADC */
-    SET_BIT(ADC->ADC_CR2, 30); /* Trigger the first conversion */
+uint16 ADC_ReadChannel(uint8 Channel){
+    WRITE_BIT_FIELD(ADC->ADC_SQR3, 0x1F, 0, Channel);
+
+    SET_BIT(ADC->ADC_CR2, 30); 
+
+    while(READ_BIT(ADC->ADC_SR, 1) == 0) {
+        /* CPU blocks here for a few microseconds until the reading is ready */
+    }
+    return ADC->ADC_DR; 
 }
 
-uint16 ADC_Read(void){
-    return ADC_ResultBuffer;   /* Return from the software buffer */
-}
-
-void ADC_IRQHandler(void){
-    /* Reading the Data Register automatically clears the EOC hardware flag */
-    ADC_ResultBuffer = ADC->ADC_DR; 
-}
