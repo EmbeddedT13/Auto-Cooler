@@ -1,24 +1,27 @@
 #include "temp.h"
 #include "../../mcal/adc/adc.h"
 
-static uint8 TempSensorChannel = 0;
+volatile uint16 Temp_Buffer = 0;
 
-void TEMP_Init(uint8 Channel){
-    
-    TempSensorChannel = Channel;
+void TEMP_Init(uint8 Channel) {
+    /* 1. Initialize the ADC logic */
+    ADC_Init(Channel, ADC_RESOLUTION_12B, ADC_CONTINUOUS);
 
-    /* Initialize ADC for the requested channel, 12-bit resolution, Continuous Mode */
-    ADC_Init(Channel, ADC_RESOLUTION_12B, ADC_CONTINUOUS); 
-    
-    ADC_Start();
+    /* 2. Tell the MCAL to handle the heavy lifting and pipe data to our buffer */
+    ADC_Start_DMA((uint16*)&Temp_Buffer);
 }
 
-uint16 TEMP_GetCelsius_x10(void){
-
-    uint16 adc_value = ADC_Read(); /* Fetch autonomously updated value */
+uint16 TEMP_GetCelsius_x10(void) {
+    /* Get the raw data the DMA updated invisibly */
+    uint16 raw_digital = Temp_Buffer; 
     
-    /* Calculate Temperature x 10 using fixed-point math to avoid floats */
-    uint16 temp_x10 = (uint16) (((uint32) adc_value * TEMP_VOLTAGE) / TEMP_RESOLUTION); 
-
+    /* Convert digital value to physical voltage (millivolts) */
+    uint32 milliVolts = ((uint32)raw_digital * TEMP_VOLTAGE) / TEMP_RESOLUTION;
+    
+    /* Convert voltage to Temperature. 
+       Since you named the function x10, we don't divide by 10!
+       (e.g., 25.4 degrees Celsius will be returned as 254) */
+    uint16 temp_x10 = (uint16)milliVolts;
+    
     return temp_x10;
 }

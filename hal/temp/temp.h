@@ -3,7 +3,7 @@
 
 #include "../../core/STD_TYPES.h"
 
-
+#define TEMP_SENSOR_CHANNEL ADC_CHANNEL_0
 #define TEMP_VOLTAGE     3300  /*Vref = 3300 mv*/
 #define TEMP_RESOLUTION  4096  /*ADC resolution = 2^12 = 4096 steps*/
 
