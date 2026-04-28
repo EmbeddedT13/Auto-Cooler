@@ -4,8 +4,7 @@
 #include "../nvic/nvic.h"
 #include "../rcc/rcc.h"
 
-
-
+volatile uint16 ADC_ResultBuffer = 0;
 
 void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode){
 
@@ -27,10 +26,11 @@ void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode){
         RCC_EnableClock(RCC_AHB1, GPIOC_AHB1_BIT);
         GPIO_SetPinMode(GPIOC, Channel, GPIO_MODE_ANALOG);
         WRITE_BIT_FIELD(ADC->ADC_SMPR1, 0x07, ((Channel - 10) * 3), ADC_SAMPLE_TIME_480);
-    
     }
 
     WRITE_BIT_FIELD(ADC->ADC_CR1, 0x03, 24, Res); /*Clear res bits in CR1 and put Res value in these bits*/
+    
+    SET_BIT(ADC->ADC_CR1, 5); /* Enable EOC Interrupt */
         
     if(Mode == ADC_CONTINUOUS){
         SET_BIT(ADC->ADC_CR2, 1); /* Enable Continuous Conversion */
@@ -42,19 +42,20 @@ void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode){
     CLEAR_BIT(ADC->ADC_CR2, 11); /*Making sure of right allignment*/
     
     WRITE_BIT_FIELD(ADC->ADC_SQR1, 0x0F, 20, 0); /* Set Sequence length to 1 */
-    
+    WRITE_BIT_FIELD(ADC->ADC_SQR3, 0x1F, 0, Channel); /* Assign channel to sequence */
+
+    NVIC_EnableInterrupt(ADC_IRQ); /* Unmask the ADC interrupt in the NVIC */
+}
+
+void ADC_Start(void){
     SET_BIT(ADC->ADC_CR2, 0);  /* Power on the ADC */    
-
+    SET_BIT(ADC->ADC_CR2, 30); /* Trigger the first continuous conversion */
 }
 
-uint16 ADC_ReadChannel(uint8 Channel){
-    WRITE_BIT_FIELD(ADC->ADC_SQR3, 0x1F, 0, Channel);
-
-    SET_BIT(ADC->ADC_CR2, 30); 
-
-    while(READ_BIT(ADC->ADC_SR, 1) == 0) {
-        /* CPU blocks here for a few microseconds until the reading is ready */
-    }
-    return ADC->ADC_DR; 
+uint16 ADC_Read(void){
+    return ADC_ResultBuffer; /* Read from the non-blocking software buffer */
 }
 
+void ADC_IRQHandler(void){
+    ADC_ResultBuffer = ADC->ADC_DR; /* Hardware automatically clears EOC flag upon reading DR */
+}

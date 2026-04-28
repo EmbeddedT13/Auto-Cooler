@@ -68,6 +68,6 @@ typedef struct {
 #define ADC_CONTINUOUS    1
 
 #define ADC_IRQ 18
-void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode);
-uint16 ADC_ReadChannel(uint8 Channel);
+void ADC_Start(void);
+uint16 ADC_Read(void);
 #endif
