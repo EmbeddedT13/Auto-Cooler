@@ -3,14 +3,11 @@
 #include "../../mcal/gpio/gpio.h"
 #include "../../mcal/rcc/rcc.h"
 
-/* Private instance of the LCD configuration */
 static LCD_Config_t SystemLCD;
 
 void DISPLAY_Init(void) {
-    /* Initialize LCD based on Proteus Wiring */
     RCC_EnableClock(RCC_AHB1, GPIOB_AHB1_BIT);
     
-    /* Initialize LCD based on Proteus Wiring */
     SystemLCD.CtrlPort = GPIOB;
     SystemLCD.DataPort = GPIOB;
     SystemLCD.RS_Pin   = GPIO_PIN00;
@@ -23,15 +20,11 @@ void DISPLAY_Init(void) {
     
     LCD_Init(&SystemLCD);
 
-    /* Setup initial display */
     LCD_SetCursor(&SystemLCD, 0, 0);
-    LCD_SendString(&SystemLCD, "System Ready");
+    LCD_SendString(&SystemLCD, "System Ready    ");
 }
 
 void DISPLAY_Update(uint16 temp_x10, uint8 fan_speed, uint8 is_overheat) {
-    /* LCD_Clear is removed to prevent flickering. We pad spaces instead. */
-
-    /* Calculate integer and fractional parts of the temperature */
     uint8 int_part = temp_x10 / 10;
     uint8 frac_part = temp_x10 % 10;
 
@@ -39,9 +32,15 @@ void DISPLAY_Update(uint16 temp_x10, uint8 fan_speed, uint8 is_overheat) {
     LCD_SetCursor(&SystemLCD, 0, 0);
     LCD_SendString(&SystemLCD, "Temp: ");
     
-    /* Send the tens digit, ones digit, decimal point, and fraction digit */
-    LCD_SendData(&SystemLCD, (int_part / 10) + '0');
-    LCD_SendData(&SystemLCD, (int_part % 10) + '0');
+    /* 3-Digit Overflow Fix */
+    if (int_part >= 100) {
+        LCD_SendData(&SystemLCD, (int_part / 100) + '0');       /* Hundreds */
+    } else {
+        LCD_SendData(&SystemLCD, ' ');                          /* Padding */
+    }
+    LCD_SendData(&SystemLCD, ((int_part / 10) % 10) + '0');     /* Tens */
+    LCD_SendData(&SystemLCD, (int_part % 10) + '0');            /* Ones */
+    
     LCD_SendData(&SystemLCD, '.');
     LCD_SendData(&SystemLCD, frac_part + '0');
     LCD_SendString(&SystemLCD, " C  ");
@@ -54,17 +53,16 @@ void DISPLAY_Update(uint16 temp_x10, uint8 fan_speed, uint8 is_overheat) {
     } else {
         LCD_SendString(&SystemLCD, "Fan: ");
         
-        /* Print the fan speed */
-        if (fan_speed == 100) {
-            LCD_SendString(&SystemLCD, "100%        ");
+        if (fan_speed >= 100) {
+            LCD_SendString(&SystemLCD, "100%       ");
         } else {
-            /* If the speed is two digits (like 33 or 66), print the tens digit */
             if (fan_speed >= 10) {
                 LCD_SendData(&SystemLCD, (fan_speed / 10) + '0');
+            } else {
+                LCD_SendData(&SystemLCD, ' '); /* Padding */
             }
-            /* Print the ones digit */
             LCD_SendData(&SystemLCD, (fan_speed % 10) + '0');
-            LCD_SendString(&SystemLCD, "%         ");
+            LCD_SendString(&SystemLCD, "%        ");
         }
     }
 }

@@ -7,7 +7,8 @@
 typedef enum {
     COOLER_IDLE,      
     COOLER_COOLING,   
-    COOLER_OVERHEAT   
+    COOLER_OVERHEAT,
+    COOLER_ERROR   
 } CoolerState_t;
 
 #define THRESH_TEMP_LOW    250  /* 25.0 °C */

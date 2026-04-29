@@ -11,6 +11,7 @@
 #define LED_SUCCESS GPIO_PIN00  /* Green LED is on PC0 */
 #define LED_PROG_1  GPIO_PIN01  /* Yellow LED is on PC1 */
 #define LED_ALARM   GPIO_PIN02  /* Red LED is on PC2 */
+#define LED_ERROR   GPIO_PIN03      /* Blue   (PC3) - Sensor Disconnected! */
 #define LED_PROG_2  GPIO_PIN03
 #define LED_PROG_3  GPIO_PIN04
 #define LED_PROG_4  GPIO_PIN05

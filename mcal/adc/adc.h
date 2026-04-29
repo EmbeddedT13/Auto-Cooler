@@ -4,7 +4,7 @@
 #include "../../core/STD_TYPES.h"
 
 typedef struct {
-    volatile uint32 ADC_SR ;
+    volatile uint32 ADC_SR;
     volatile uint32 ADC_CR1;
     volatile uint32 ADC_CR2;
     volatile uint32 ADC_SMPR1;
@@ -24,12 +24,11 @@ typedef struct {
     volatile uint32 ADC_JDR3;
     volatile uint32 ADC_JDR4;
     volatile uint32 ADC_DR;
-}adc_t;
+} adc_t;
 
 #define ADC_BASE_ADDRESS 0x40012000
 #define ADC ((adc_t *) ADC_BASE_ADDRESS)
 
-/* ADC Channels (Mapped to GPIO pins A0-A7, B0-B1, C0-C5) */
 #define ADC_CHANNEL_0   0
 #define ADC_CHANNEL_1   1
 #define ADC_CHANNEL_2   2
@@ -47,7 +46,6 @@ typedef struct {
 #define ADC_CHANNEL_14  14
 #define ADC_CHANNEL_15  15
 
-/* ADC Sample Time Options (in Clock Cycles) */
 #define ADC_SAMPLE_TIME_3      0
 #define ADC_SAMPLE_TIME_15     1
 #define ADC_SAMPLE_TIME_28     2
@@ -57,20 +55,24 @@ typedef struct {
 #define ADC_SAMPLE_TIME_144    6
 #define ADC_SAMPLE_TIME_480    7
 
-/* ADC Resolution Options */
 #define ADC_RESOLUTION_12B 0
 #define ADC_RESOLUTION_10B 1
 #define ADC_RESOLUTION_8B  2
 #define ADC_RESOLUTION_6B  3
 
-/* ADC Modes */
 #define ADC_DISCONTINUOUS 0
 #define ADC_CONTINUOUS    1
 
 #define ADC_IRQ 18
 
+/* Shared state — defined in adc.c, used by temp.c */
+extern volatile uint16 Temp_Buffer;
+extern volatile uint8  Temp_DataReady;
+
 void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode);
 void ADC_Start(void);
 void ADC_EnableInterrupt(void);
+void ADC_TriggerNext(void);        /* NEW: retrigger after consuming buffer */
 void ADC_Start_DMA(uint16* DestinationBuffer);
+
 #endif
