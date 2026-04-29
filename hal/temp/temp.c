@@ -18,9 +18,7 @@ uint16 TEMP_GetCelsius_x10(void) {
     /* Convert digital value to physical voltage (millivolts) */
     uint32 milliVolts = ((uint32)raw_digital * TEMP_VOLTAGE) / TEMP_RESOLUTION;
     
-    /* Convert voltage to Temperature. 
-       Since you named the function x10, we don't divide by 10!
-       (e.g., 25.4 degrees Celsius will be returned as 254) */
+    /* Convert voltage to Temperature. */
     uint16 temp_x10 = (uint16)milliVolts;
     
     return temp_x10;
