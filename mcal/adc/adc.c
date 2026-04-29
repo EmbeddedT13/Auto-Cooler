@@ -9,8 +9,7 @@ void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode){
     RCC_EnableClock(RCC_APB2, RCC_APB2_ADC1_BIT);
 
     #define ADC_CCR (*((volatile uint32*)0x40012304))
-    ADC_CCR &= ~(0x3 << 16);
-    ADC_CCR |=  (0x1 << 16);
+    WRITE_BIT_FIELD(ADC_CCR, 0x3, 16, 0x1);
 
     if(Channel >= 0 && Channel <= 7){
         RCC_EnableClock(RCC_AHB1, GPIOA_AHB1_BIT);
