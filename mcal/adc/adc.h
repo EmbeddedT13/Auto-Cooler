@@ -71,5 +71,6 @@ typedef struct {
 
 void ADC_Init(uint8 Channel, uint8 Res, uint8 Mode);
 void ADC_Start(void);
+void ADC_EnableInterrupt(void);
 void ADC_Start_DMA(uint16* DestinationBuffer);
 #endif

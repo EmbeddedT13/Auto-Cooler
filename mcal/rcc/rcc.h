@@ -50,6 +50,8 @@ void RCC_EnableClock(uint8 BusId, uint8 PeripheralBit);
 void RCC_EnableTIM3(void);
 void RCC_EnableADC1(void);
 void RCC_EnableDMA2(void);
+void RCC_EnableTIM2(void);
+void RCC_EnableTIM4(void);
 
 
 #endif

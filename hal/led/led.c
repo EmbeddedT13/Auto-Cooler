@@ -1,8 +1,12 @@
 #include "led.h"
+#include "../../mcal/rcc/rcc.h"
 
 /*to set the designated LED pin as an output.*/
 void LED_Init(uint8 LedPin)
 {
+    /* Enable GPIOC clock for the LED port */
+    RCC_EnableClock(RCC_AHB1, GPIOC_AHB1_BIT);
+    
     if(LedPin <= 15)
     {
         GPIO_SetPinMode(LED_PORT, LedPin, GPIO_MODE_OUTPUT);

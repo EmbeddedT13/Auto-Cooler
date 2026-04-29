@@ -58,10 +58,23 @@ void LCD_Init(LCD_Config_t* lcd) {
     Timer_Delay_ms(50); 
 
     /* 2. The HD44780 Datasheet "Wake Up" Sequence for 4-bit mode */
-    LCD_SendCommand(lcd, 0x33); 
+    GPIO_WritePin(lcd->CtrlPort, lcd->RS_Pin, GPIO_STATE_LOW); /* RS = 0 for commands */
+
+    /* Step 1: Send 0x03 and wait > 4.1ms */
+    LCD_SendNibble(lcd, 0x03);
     Timer_Delay_ms(5);
-    LCD_SendCommand(lcd, 0x32); 
+
+    /* Step 2: Send 0x03 and wait > 100us */
+    LCD_SendNibble(lcd, 0x03);
     Timer_Delay_us(150);
+    
+    /* Step 3: Send 0x03 again */
+    LCD_SendNibble(lcd, 0x03);
+    Timer_Delay_ms(2);
+    
+    /* Step 4: Send 0x02 to finally switch to 4-bit mode */
+    LCD_SendNibble(lcd, 0x02);
+    Timer_Delay_ms(2);
     
     /* 3. Configure Display settings */
     LCD_SendCommand(lcd, LCD_CMD_4BIT_2LINE);

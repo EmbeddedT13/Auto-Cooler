@@ -78,9 +78,9 @@ typedef struct {
 #define DMA_CIRCULAR_ENABLE          1
 
 
-void DMA_Init(dma_stream_t *Stream, DMA_Config_t *Config);
-void DMA_SetAddresses(dma_stream_t *Stream, uint32 PeripheralAddress, uint32 MemoryAddress, uint16 NumberOfTransfers);
-void DMA_Enable(dma_stream_t *Stream);
+void DMA_Init(volatile dma_stream_t *Stream, DMA_Config_t *Config);
+void DMA_SetAddresses(volatile dma_stream_t *Stream, uint32 PeripheralAddress, uint32 MemoryAddress, uint16 NumberOfTransfers);
+void DMA_Enable(volatile dma_stream_t *Stream);
 
 
 #endif

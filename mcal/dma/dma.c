@@ -3,7 +3,7 @@
 
 
 
-void DMA_Init(dma_stream_t *Stream, DMA_Config_t *Config){
+void DMA_Init(volatile dma_stream_t *Stream, DMA_Config_t *Config){
 
     CLEAR_BIT(Stream->DMA_CR, 0); /*The stream must be disabled before configuring it */
     while(READ_BIT(Stream->DMA_CR, 0) == 1); /*Making sure it is disabled before configuring it*/
@@ -24,7 +24,7 @@ void DMA_Init(dma_stream_t *Stream, DMA_Config_t *Config){
 }
 
 
-void DMA_SetAddresses(dma_stream_t *Stream, uint32 PeripheralAddress, uint32 MemoryAddress, uint16 NumberOfTransfers){
+void DMA_SetAddresses(volatile dma_stream_t *Stream, uint32 PeripheralAddress, uint32 MemoryAddress, uint16 NumberOfTransfers){
 
     /* Assign the source and destination addresses */
     Stream->DMA_PAR = PeripheralAddress;
@@ -35,7 +35,7 @@ void DMA_SetAddresses(dma_stream_t *Stream, uint32 PeripheralAddress, uint32 Mem
 }
 
 
-void DMA_Enable(dma_stream_t *Stream){
+void DMA_Enable(volatile dma_stream_t *Stream){
 
     
     SET_BIT(Stream->DMA_CR, 0); /* Enable the stream */

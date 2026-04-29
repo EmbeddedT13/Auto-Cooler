@@ -31,3 +31,11 @@ void RCC_EnableADC1(void) {
 void RCC_EnableDMA2(void) {
     SET_BIT(RCC -> RCC_AHB1ENR, RCC_AHB1_DMA2_BIT);
 }
+
+void RCC_EnableTIM2(void) {
+    SET_BIT(RCC -> RCC_APB1ENR, 0); /* Bit 0 is TIM2EN */
+}
+
+void RCC_EnableTIM4(void) {
+    SET_BIT(RCC -> RCC_APB1ENR, 2); /* Bit 2 is TIM4EN */
+}
