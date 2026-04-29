@@ -2,6 +2,7 @@
 #define TEMP_H
 
 #include "../../core/STD_TYPES.h"
+#include "../../mcal/adc/adc.h"
 
 #define TEMP_SENSOR_CHANNEL ADC_CHANNEL_0
 #define TEMP_VOLTAGE     3300  /*Vref = 3300 mv*/

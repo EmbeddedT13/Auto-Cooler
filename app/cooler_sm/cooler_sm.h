@@ -10,10 +10,10 @@ typedef enum {
     COOLER_OVERHEAT   
 } CoolerState_t;
 
-#define THRESH_TEMP_LOW    250  /* 27.0 °C */
-#define THRESH_TEMP_MID    320  /* 32.0 °C */
-#define THRESH_TEMP_MAX    370  /* 37.0 °C */
-#define THRESH_TEMP_ALARM  400  /* 42.0 °C */
+#define THRESH_TEMP_LOW    250  /* 25.0 °C */
+#define THRESH_TEMP_MED    300  /* 30.0 °C */
+#define THRESH_TEMP_MAX    350  /* 35.0 °C */
+#define THRESH_TEMP_ALARM  400  /* 40.0 °C */
 
 
 void COOLER_Init(void);
